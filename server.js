@@ -1,12 +1,14 @@
 const express = require('express');
-const { scrapeInstagramPost } = require('./src/scraper');
+const fs = require('fs');
 const path = require('path');
+const { scrapeInstagramPost } = require('./src/scraper');
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/downloads', express.static('downloads'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -23,8 +25,16 @@ app.post('/scrape', async (req, res) => {
 
   try {
     const result = await scrapeInstagramPost(url);
-    res.render('result', { result, url });
+    
+    const match = url.match(/instagram\.com\/p\/([^\/]+)\//);
+    const postId = match ? match[1] : `post_${Date.now()}`;
+    
+    const filePath = path.join(__dirname, 'downloads', `${postId}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(result, null, 2), 'utf-8');
+
+    res.render('result', { result, url, fileName: `${postId}.json` });
   } catch (err) {
+    console.error(err);
     res.render('index', { error: 'Failed to scrape the post. Please try another URL.' });
   }
 });

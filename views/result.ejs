@@ -4,14 +4,17 @@
   <title>Scrape Result</title>
   <style>
     body { font-family: monospace; padding: 2rem; }
-    pre { background: #f5f5f5; padding: 1rem; border-radius: 5px; }
-    a { display: inline-block; margin-top: 1rem; }
+    pre { background: #f5f5f5; padding: 1rem; border-radius: 5px; max-height: 500px; overflow-y: auto; }
+    a { display: inline-block; margin-top: 1rem; margin-right: 1rem; }
   </style>
 </head>
 <body>
-  <h1>📦 Scraped Data for</h1>
-  <p><a href="<%= url %>" target="_blank"><%= url %></a></p>
+  <h1>📦 Scraped Data</h1>
+  <p><a href="<%= url %>" target="_blank">🔗 <%= url %></a></p>
+
   <pre><%= JSON.stringify(result, null, 2) %></pre>
+
   <a href="/">⬅️ Back</a>
+  <a href="/downloads/<%= fileName %>" download>📥 Download JSON</a>
 </body>
 </html>

@@ -7,17 +7,25 @@
     input[type="text"] { width: 100%; padding: 0.5rem; }
     button { padding: 0.5rem 1rem; margin-top: 1rem; }
     .error { color: red; }
+    .loader { display: none; margin-top: 1rem; }
   </style>
 </head>
 <body>
   <h1>📸 Instagram Post Scraper</h1>
-  <form method="POST" action="/scrape">
+  <form method="POST" action="/scrape" onsubmit="showLoader()">
     <input type="text" name="url" placeholder="Enter Instagram post URL" required />
     <br />
     <button type="submit">Scrape</button>
+    <div class="loader" id="loader">⏳ Scraping in progress...</div>
   </form>
   <% if (typeof error !== 'undefined') { %>
     <p class="error"><%= error %></p>
   <% } %>
+
+  <script>
+    function showLoader() {
+      document.getElementById('loader').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
