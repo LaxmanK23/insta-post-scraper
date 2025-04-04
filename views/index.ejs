@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Instagram Post Scraper</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    input[type="text"] { width: 100%; padding: 0.5rem; }
+    button { padding: 0.5rem 1rem; margin-top: 1rem; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>📸 Instagram Post Scraper</h1>
+  <form method="POST" action="/scrape">
+    <input type="text" name="url" placeholder="Enter Instagram post URL" required />
+    <br />
+    <button type="submit">Scrape</button>
+  </form>
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+</body>
+</html>
