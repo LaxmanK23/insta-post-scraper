@@ -42,6 +42,7 @@ async function scrapeInstagramPost(url) {
       );
       
       loadMore = await page.$('text=Load more comments') !== null;
+    //   loadMore =false;
     }
 
     await browser.close();
