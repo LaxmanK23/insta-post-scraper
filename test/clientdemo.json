@@ -1,0 +1,19 @@
+{
+    "post": {
+      "username": "usernamesample",
+      "cover": "https://website.com/image.jpg",
+      "caption": "Texto del post",
+      "likes": 1050,
+      "comments_count": 320,
+      "created_at": "2025-03-10T12:34:56Z",
+      "comments": [
+        {
+          "username": "usuario1",
+          "text": "¡Me encanta!",
+          "likes": 3,
+          "created_at": "2025-03-10T13:00:00Z"
+        }
+      ]
+    }
+  }
+  

@@ -9,7 +9,7 @@ async function scrapeInstagramPost(url) {
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Accept cookies if present
+
     const acceptBtn = await page.$('text=Only allow essential cookies');
     if (acceptBtn) await acceptBtn.click();
 
@@ -36,11 +36,11 @@ async function scrapeInstagramPost(url) {
         nodes.map(el => ({
           username: el.querySelector('h3')?.innerText || '',
           text: el.querySelector('span')?.innerText || '',
-          likes: 0, // Usually hidden publicly
+          likes: 0,
           created_at: el.querySelector('time')?.getAttribute('datetime') || '',
         }))
       );
-
+      
       loadMore = await page.$('text=Load more comments') !== null;
     }
 
