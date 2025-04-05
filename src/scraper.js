@@ -80,7 +80,7 @@ async function scrapeInstagramPost(url) {
 
     let comments = [];
     let loadMore = true;
-    while (loadMore && comments.length < 300) {
+    while (loadMore && comments.length < 20) {
       console.log(`Loading more comments... (${comments.length} loaded)`);
       await page.mouse.wheel(0, 500);
       await page.waitForTimeout(1500);
