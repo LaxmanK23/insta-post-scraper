@@ -15,6 +15,31 @@
   <pre><%= JSON.stringify(result, null, 2) %></pre>
 
   <a href="/">⬅️ Back</a>
-  <a href="/downloads/<%= fileName %>" download>📥 Download JSON</a>
+  <button id="downloadBtn">📥 Download JSON</button>
+
+  <script>
+    // Embed the stringified JSON data directly into a JS string
+    const resultJsonString = `<%- JSON.stringify(result) %>`; 
+    // Parse the JSON string into a JavaScript object
+    const resultData = JSON.parse(resultJsonString);
+    const postId = "<%= postId %>";
+    const downloadButton = document.getElementById('downloadBtn');
+
+    downloadButton.addEventListener('click', () => {
+      const jsonString = JSON.stringify(resultData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${postId}.json`;
+      document.body.appendChild(a); // Append anchor to body to ensure it works in all browsers
+      a.click();
+      
+      // Clean up: remove the temporary anchor and revoke the object URL
+      document.body.removeChild(a); 
+      URL.revokeObjectURL(url);
+    });
+  </script>
 </body>
 </html>

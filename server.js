@@ -18,7 +18,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use('/downloads', express.static('downloads'));
+// Removed static route for downloads as it's no longer needed
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -38,11 +38,9 @@ app.post('/scrape', async (req, res) => {
     
     const match = url.match(/instagram\.com\/p\/([^\/]+)\//);
     const postId = match ? match[1] : `post_${Date.now()}`;
-    
-    const filePath = path.join(__dirname, 'downloads', `${postId}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(result, null, 2), 'utf-8');
 
-    res.render('result', { result, url, fileName: `${postId}.json` });
+    // Pass the result data and postId directly to the template
+    res.render('result', { result, url, postId });
   } catch (err) {
     console.error(err);
     res.render('index', { error: 'Failed to scrape the post. Please try another URL.' });
