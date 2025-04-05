@@ -1,14 +1,14 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { scrapeInstagramPost } = require('./src/scraper');
+const { initScraper, scrapeInstagramPost, closeScraper } = require('./src/scraper');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = 3000;
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 10 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 10, 
   message: {
     status: 429,
     error: "Too many requests. Please try again later.",
@@ -49,6 +49,26 @@ app.post('/scrape', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    await initScraper();
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running at http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to initialize scraper:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+// Graceful shutdown (Original simpler version)
+const shutdown = async () => {
+  console.log('Shutting down server...');
+  await closeScraper();
+  process.exit(0);
+};
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);

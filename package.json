@@ -6,18 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": " yarn playwright install "
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@sparticuz/chromium": "^133.0.0",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
-    "playwright": "^1.51.1",
+    "playwright-core": "^1.44.1",
     "user-agents": "^1.1.499"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

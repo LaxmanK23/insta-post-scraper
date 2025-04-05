@@ -9,12 +9,13 @@
 // })();
 const fs = require('fs');
 const path = require('path');
-const { scrapeInstagramPost } = require('../src/scraper');
+const { initScraper, scrapeInstagramPost, closeScraper } = require('../src/scraper');
 
 (async () => {
   const url = 'https://www.instagram.com/p/CmUv48DLvxd/?img_index=1/'; // Replace with actual post URL
   try {
-    
+    await initScraper(); // Initialize the browser
+    console.log('Scraping Instagram post...');
     const data = await scrapeInstagramPost(url);
     const match = url.match(/instagram\.com\/p\/([^\/]+)\//);
     const postId = match ? match[1] : `post_${Date.now()}`;
@@ -23,5 +24,7 @@ const { scrapeInstagramPost } = require('../src/scraper');
     console.log(`✅ JSON saved to ${outputPath}`);
   } catch (err) {
     console.error('❌ Failed to scrape Instagram post:', err.message);
+  } finally {
+    await closeScraper(); // Ensure browser is closed
   }
 })();
