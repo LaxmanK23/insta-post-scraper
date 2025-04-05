@@ -1,11 +1,49 @@
 const { chromium } = require('playwright');
+const UserAgent = require("user-agents");
+
+function getRandomDelay(min = 1000, max = 3000) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 async function scrapeInstagramPost(url) {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117.0.0.0 Safari/537.36',
-  });
+  // const browser = await chromium.launch({ headless: true });
+  // const page = await browser.newPage({
+  //   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117.0.0.0 Safari/537.36',
+  // });
+  // const proxyServer = process.env.PROXY_SERVER;
+  // const browser = await chromium.launch({
+  //   proxy: proxyServer ? { server: process.env.PROXY_URL } : undefined,
+  // });
+  // // const page = await browser.newPage();
 
+  // const userAgent = new UserAgent();
+  // // await page.setUserAgent(userAgent.toString());
+  // const context = await browser.newContext({
+  //   userAgent,
+  //   viewport: { width: 1280, height: 720 },
+  //   locale: "en-US",
+  // });
+  // const page = await context.newPage();
+  // // Set headers to mimic real browser
+  // await page.setExtraHTTPHeaders({
+  //   "Accept-Language": "en-US,en;q=0.9",
+  // });
+
+  // // 💤 Randomized delay
+  // await page.waitForTimeout(getRandomDelay());
+
+  const userAgent = new UserAgent().toString();
+
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    userAgent,
+    viewport: { width: 1280, height: 720 },
+    locale: "en-US",
+  });
+  const page = await context.newPage();
+
+
+  await page.waitForTimeout(getRandomDelay());
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
@@ -42,7 +80,7 @@ async function scrapeInstagramPost(url) {
       );
       
       loadMore = await page.$('text=Load more comments') !== null;
-    //   loadMore =false;
+      // loadMore =false;
     }
 
     await browser.close();
