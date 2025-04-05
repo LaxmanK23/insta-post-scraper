@@ -4,7 +4,6 @@ const UserAgent = require("user-agents");
 function getRandomDelay(min = 1000, max = 3000) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 async function scrapeInstagramPost(url) {
   // const browser = await chromium.launch({ headless: true });
   // const page = await browser.newPage({
@@ -32,31 +31,38 @@ async function scrapeInstagramPost(url) {
   // // 💤 Randomized delay
   // await page.waitForTimeout(getRandomDelay());
 
-  const userAgent = new UserAgent().toString();
+  // const userAgents = [
+  //   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+  //   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+  //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+  //   'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/110.0',
+  //   'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15'
+  // ];
+  // const userAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
+
 
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    userAgent,
-    viewport: { width: 1280, height: 720 },
-    locale: "en-US",
+  const page = await browser.newPage({
+    // userAgent,
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117.0.0.0 Safari/537.36',
   });
-  const page = await context.newPage();
+
+
+  // const userAgent = new UserAgent().toString();
+
+  // const browser = await chromium.launch({ headless: true });
+  // const context = await browser.newContext({
+  //   userAgent,
+  //   viewport: { width: 1280, height: 720 },
+  //   locale: "en-US",
+  // });
+  // const page = await context.newPage();
 
 
   await page.waitForTimeout(getRandomDelay());
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded' });
-    // const html = await page.content();
 
-    // if (
-    //   html.includes('www.instagram.com/challenge') ||
-    //   html.includes('captcha') ||
-    //   html.includes('suspicious_login') ||
-    //   html.includes('Please wait a few minutes before you try again.')
-    // ) {
-    //   throw new Error("⚠️ Instagram is temporarily blocking access (CAPTCHA or rate-limit). Try using a different IP or User-Agent.");
-    // }
-    
 
     const acceptBtn = await page.$('text=Only allow essential cookies');
     if (acceptBtn) await acceptBtn.click();
