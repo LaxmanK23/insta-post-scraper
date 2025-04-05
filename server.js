@@ -8,7 +8,7 @@ const app = express();
 const PORT = 3000;
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 10, 
+  max: 100, 
   message: {
     status: 429,
     error: "Too many requests. Please try again later.",
@@ -50,8 +50,8 @@ app.post('/scrape', async (req, res) => {
 async function startServer() {
   try {
     await initScraper();
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Failed to initialize scraper:", error);

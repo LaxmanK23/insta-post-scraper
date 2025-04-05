@@ -45,6 +45,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 COPY package*.json ./
 # Install Node.js dependencies (including @sparticuz/chromium which downloads Chromium)
 RUN npm install --omit=dev
