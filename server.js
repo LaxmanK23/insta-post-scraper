@@ -2,10 +2,20 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { scrapeInstagramPost } = require('./src/scraper');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = 3000;
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 requests per windowMs
+  message: {
+    status: 429,
+    error: "Too many requests. Please try again later.",
+  },
+});
 
+app.use(limiter);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use('/downloads', express.static('downloads'));

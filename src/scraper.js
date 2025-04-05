@@ -46,7 +46,17 @@ async function scrapeInstagramPost(url) {
   await page.waitForTimeout(getRandomDelay());
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded' });
+    // const html = await page.content();
 
+    // if (
+    //   html.includes('www.instagram.com/challenge') ||
+    //   html.includes('captcha') ||
+    //   html.includes('suspicious_login') ||
+    //   html.includes('Please wait a few minutes before you try again.')
+    // ) {
+    //   throw new Error("⚠️ Instagram is temporarily blocking access (CAPTCHA or rate-limit). Try using a different IP or User-Agent.");
+    // }
+    
 
     const acceptBtn = await page.$('text=Only allow essential cookies');
     if (acceptBtn) await acceptBtn.click();
@@ -79,8 +89,8 @@ async function scrapeInstagramPost(url) {
         }))
       );
       
-      loadMore = await page.$('text=Load more comments') !== null;
-      // loadMore =false;
+      // loadMore = await page.$('text=Load more comments') !== null;
+      loadMore =false;
     }
 
     await browser.close();
